@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+<h1>Bienvenido {{ username }}</h1>
+<h2>Nuevo Usuario</h2>
+  {% if nuevou %}
+  <p class="msj ok">Usuario creado con éxito.</p>
+  {% endif %}
+  <form action="/nuevou" method="post">
+    <input type="text" name="usuario" id="user" placeholder="Usuario" required>
+    <input type="number" name="contraseña" id="password" placeholder="Contraseña" required>
+    <input type="submit" value="Crear contacto">
+  </form>
+
+<h2>Borrar usuario</h2>
+  {% if borraru %}
+  <p class="msj ok">Usuario borrado con éxito.</p>
+  {% endif %}
+  <form action="/borraru" method="post">
+    <input type="text" name="usuario" id="duser" placeholder="Usuario" required>
+    <input type="submit" value="Borrar contacto">
+  </form>
+
+<form action="/logout" method="post">
+    <input type="submit" value="Cerrar Sesión">
+</form>
+</body>
+
+</html>

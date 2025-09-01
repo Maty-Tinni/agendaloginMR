@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+<h1>Bienvenido {{ username }}</h1>
+<h2>Nuevo contacto</h2>
+  {% if nuevo %}
+  <p class="msj ok">Usuario creado con éxito.</p>
+  {% endif %}
+  <form action="/nuevo" method="post">
+    <input type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+    <input type="email" name="mail" id="mail" placeholder="e-mail" required>
+    <input type="number" name="telefono" id="telefono" placeholder="Teléfono" required>
+    <input type="text" name="ig" id="ig" placeholder="Instagram" required>
+    <input type="submit" value="Crear contacto">
+  </form>
+
+<h2>Buscar contactos</h2>
+<form action="/buscar" method="post">
+  <input type="text" name="ig" id="big" placeholder="Instagram" required>
+  <input type="submit" value="Buscar contacto">
+</form>
+
+<h2>Borrar contacto</h2>
+  {% if borrar %}
+  <p class="msj ok">Usuario borrado con éxito.</p>
+  {% endif %}
+  <form action="/borrar" method="post">
+    <input type="text" name="ig" id="dig" placeholder="Instagram" required>
+    <input type="submit" value="Borrar contacto">
+  </form>
+
+
+{% if nombrebuscar %}
+  <div class="resultado">
+    <h3>Contacto encontrado:</h3>
+    <p><strong>Nombre:</strong> {{ nombrebuscar['nombre'] }}</p>
+    <p><strong>Email:</strong> {{ nombrebuscar['mail'] }}</p>
+    <p><strong>Teléfono:</strong> {{ nombrebuscar['numero'] }}</p>
+    <p><strong>Instagram:</strong> {{ nombrebuscar['ig'] }}</p>
+  </div>
+{% elif no_encontrado %}
+  <p class="msj error">No se encontró ningún contacto con ese Instagram.</p>
+{% endif %}
+<form action="/logout" method="post">
+    <input type="submit" value="Cerrar Sesión">
+</form>
+</body>
+
+</html>
