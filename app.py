@@ -49,7 +49,8 @@ def nuevo_usuario():
 @app.route("/buscar", methods=['POST'])
 def buscar_contacto():
     big = request.form['ig']
-    resultado=accesoDB.obtener("agenda", ["nombre","mail","numero","ig"],filtro=("ig",big))
+    bnombre = request.form['nombre']
+    resultado=accesoDB.obtener("agenda", ["nombre","mail","numero","ig"], {'usuario': session['user'], 'nombre': bnombre, 'ig' : big})
     if resultado:
         contacto = resultado[0]
         return render_template("home.html", titulo="Formulario", nombrebuscar=contacto)
@@ -58,21 +59,22 @@ def buscar_contacto():
 
 @app.route("/borrar", methods=['POST'])
 def borrar_contacto():
+    dnombre = request.form['nombre']
     dig = request.form['ig']
-    accesoDB.borrar("agenda", ("ig",dig))
+    accesoDB.borrar("agenda", {"nombre": dnombre, "ig": dig, "usuario": session['user']})
     return render_template("home.html", titulo="Formulario", borrar = True)
 
 @app.route("/borraru", methods=['POST'])
 def borrar_usuario():
     duser = request.form['usuario']
-    accesoDB.borrar("usuarios", ("usuario",duser))
+    accesoDB.borrar("usuarios", {"usuario" : duser})
     return render_template("admin.html", titulo="Formulario", borraru = True)
 
 @app.route("/login", methods = ['POST'])
 def login():
     username = request.form['username']
     password = request.form['password']
-    usuarioLista=accesoDB.obtener("usuarios", ["usuario","contraseña"],filtro=("usuario", username))
+    usuarioLista=accesoDB.obtener("usuarios", ["usuario","contraseña"], {"usuario": username})
     usuario=usuarioLista[0]
     if username == 'admin' and password == usuario['contraseña']:
         session['user'] = 'admin'

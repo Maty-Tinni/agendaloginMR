@@ -23,16 +23,18 @@
 
 <h2>Buscar contactos</h2>
 <form action="/buscar" method="post">
+  <input type="text" name="nombre" id="bnombre" placeholder="Nombre" required>
   <input type="text" name="ig" id="big" placeholder="Instagram" required>
   <input type="submit" value="Buscar contacto">
 </form>
 
 <h2>Borrar contacto</h2>
   {% if borrar %}
-  <p class="msj ok">Usuario borrado con éxito.</p>
+  <p class="msj ok">Contacto borrado con éxito.</p>
   {% endif %}
   <form action="/borrar" method="post">
-    <input type="text" name="ig" id="dig" placeholder="Instagram" required>
+    <input type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+    <input type="text" name="ig" id="ig" placeholder="Instagram" required>
     <input type="submit" value="Borrar contacto">
   </form>
 

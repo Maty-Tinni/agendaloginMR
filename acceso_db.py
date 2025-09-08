@@ -31,25 +31,23 @@ class AccesoDB:
         self.__coneccion.commit()
         return resultado
     
-    def obtener(self, tabla: str, columnas: list[str], filtro: Optional[tuple[str,str]] = None) \
-        -> list[dict[str,Any]]:
 
+    def obtener(self, tabla: str, columnas: list[str], filtros: Optional[dict[str, str]] = None) \
+    -> list[dict[str, Any]]:
         if not columnas:
             raise ValueError("La lista de columnas no puede estar vacía")
         cols = ', '.join(columnas)
-        query = f"SELECT {cols} FROM {tabla}"
-        if filtro is not None:
-            if len(filtro) != 2:
-                raise ValueError("El filtro debe ser una tupla de dos elementos: (columna, valor)")
-            col, val = filtro
-            query += f" WHERE `{col}` = '{val}'"
+        query = f"SELECT {cols} FROM `{tabla}`"
+        if filtros:
+            condiciones = " AND ".join([f"`{col}` = '{val}'" for col, val in filtros.items()])
+            query += f" WHERE {condiciones}"
         return self.consulta_generica(query)
           
-    def borrar(self, tabla: str, filtro: tuple[str,str]) -> int:
-
-        if len(filtro) != 2:
-            raise ValueError("El filtro debe tener dos elementos")
-        query = f"DELETE FROM `{tabla}` WHERE (`{filtro[0]}` = '{filtro[1]}')"
+    def borrar(self, tabla: str, filtros: dict[str, str]) -> int:
+        if not filtros:
+            raise ValueError("Se requiere al menos un filtro para borrar registros")
+        condiciones = " AND ".join([f"`{col}` = '{val}'" for col, val in filtros.items()])
+        query = f"DELETE FROM `{tabla}` WHERE {condiciones}"
         return self.modificacion_generica(query)
 
     def crear(self, tabla: str, data: dict[str,str]) -> int:
